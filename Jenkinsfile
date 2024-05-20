@@ -28,7 +28,7 @@ pipeline{
     stage('build'){
       steps{
         script{
-          docker.build("${DOCKER_IMAGE}:latest")
+          docker.build("${DOCKER_IMAGE}:latest", "-f dockerfile")
         }
       }
     }
