@@ -37,7 +37,7 @@ pipeline{
        script{
 	withCredentials([usernamePassword(credentialsId: 'sakdockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')])
 	{
-         docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials'){
+         docker.withRegistry('https://index.docker.io/v1/', 'sakdockerhub'){
            docker.image("${DOCKER_IMAGE}:latest").push()
          }
          sh "docker stop ${DOCKER_IMAGE} || true && docker rm ${DOCKER_IMAGE} || true"
@@ -49,7 +49,7 @@ pipeline{
  }
   post{
     always{
-      cleanWS()
+      cleanWs()
     }
   }
 }
