@@ -35,6 +35,8 @@ pipeline{
    stage('deploy'){
      steps{
        script{
+	withCredentials([usernamePassword(credentialsId: 'sakdockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')])
+	{
          docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials'){
            docker.image("${DOCKER_IMAGE}:latest").push()
          }
@@ -44,6 +46,7 @@ pipeline{
      }
    }
   }
+ }
   post{
     always{
       cleanWS()
