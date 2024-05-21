@@ -2,7 +2,7 @@ pipeline{
   agent{
     docker{
       image 'ubuntu'
-      args '-u root --network host --privileged'
+      args '-u root --network host --privileged -v /var/run/docker.sock:/var/run/docker.sock'
     }
   }
   environment{
@@ -14,8 +14,6 @@ pipeline{
       steps{
         script{
           sh 'apt-get update && apt-get install -y python3 python3-pip'
-          sh 'apt-get install -y docker.io'
-	  sh 'service docker start'
         }
       }
     }
