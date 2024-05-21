@@ -1,10 +1,5 @@
 pipeline{
-  agent{
-    docker{
-      image 'ubuntu'
-      args '-u root --network host --privileged -v /var/run/docker.sock:/var/run/docker.sock'
-    }
-  }
+  agent any
   environment{
     DOCKER_IMAGE = 'ajay302001/webpage'
   }
@@ -13,7 +8,7 @@ pipeline{
     stage('setup'){
       steps{
         script{
-          sh 'apt-get update && apt-get install -y python3 python3-pip'
+          sh 'sudo apt-get update && sudo apt-get install -y python3 python3-pip'
         }
       }
     }
