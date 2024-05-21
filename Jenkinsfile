@@ -18,6 +18,14 @@ pipeline{
         }
       }
     }
+    stage('check docker'){
+      steps{
+	script{
+	sh "docker --version"
+	sh "systemctl status docker"
+	}
+      }
+    }
     stage('checkout'){
       steps{
         script{
