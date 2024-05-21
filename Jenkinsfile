@@ -1,54 +1,28 @@
 pipeline{
   agent any
+
   environment{
-    DOCKER_IMAGE = 'ajay302001/webpage'
+    IMAGE_TAG = "${BUILD_NUMBER}"
   }
   stages{
     //here in this stage we can install the req libraries or dependencies and create the enviornment required for our app.
-    stage('setup'){
-      steps{
-        script{
-          sh 'sudo apt-get update && sudo apt-get install -y python3 python3-pip'
-        }
-      }
-    }
-    stage('check docker'){
-      steps{
-	script{
-	sh "docker --version"
-	sh "docker ps"
-	}
-      }
-    }
     stage('checkout'){
       steps{
-        script{
           git branch:'main', url:'https://github.com/Ajay9955/static_webpage.git'
         }
-      }
     }
     stage('build'){
       steps{
-        script{
-          docker.build("${DOCKER_IMAGE}:latest", "-f dockerfile .")
-        }
+          sh "docker build -t ajay302001/webpage:${BUILD_NUMBER} -f dockerfile ."
       }
     }
-   stage('deploy'){
+   stage('push and run'){
      steps{
-       script{
-	withCredentials([usernamePassword(credentialsId: 'sakdockerhub1', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')])
-	{
-         docker.withRegistry('https://index.docker.io/v1/', 'sakdockerhub1'){
-           docker.image("${DOCKER_IMAGE}:latest").push()
-         }
-         sh "docker stop ${DOCKER_IMAGE} || true && docker rm ${DOCKER_IMAGE} || true"
-         sh "docker run -d --name ${DOCKER_IMAGE} -p 8000:8000 ${DOCKER_IMAGE}:latest"
+       	 sh "docker push ajay302001/webpage:${BUILD_NUMBER}"
+         sh "docker run -d --name ${DOCKER_IMAGE} -p 8000:8000 ajay302001/webpage:${BUILD_NUMBER}"
        }
      }
    }
-  }
- }
   post{
     always{
       cleanWs()
