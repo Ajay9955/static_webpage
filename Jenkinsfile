@@ -43,9 +43,9 @@ pipeline{
    stage('deploy'){
      steps{
        script{
-	withCredentials([usernamePassword(credentialsId: 'sakdockerhub', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')])
+	withCredentials([usernamePassword(credentialsId: 'sakdockerhub1', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')])
 	{
-         docker.withRegistry('https://index.docker.io/v1/', 'sakdockerhub'){
+         docker.withRegistry('https://index.docker.io/v1/', 'sakdockerhub1'){
            docker.image("${DOCKER_IMAGE}:latest").push()
          }
          sh "docker stop ${DOCKER_IMAGE} || true && docker rm ${DOCKER_IMAGE} || true"
