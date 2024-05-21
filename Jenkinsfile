@@ -19,7 +19,7 @@ pipeline{
    stage('push and run'){
      steps{
        	 sh "docker push ajay302001/webpage:${BUILD_NUMBER}"
-         sh "docker run -d --name ${DOCKER_IMAGE} -p 8000:8000 ajay302001/webpage:${BUILD_NUMBER}"
+         sh "docker run -p 8000:8000 -it ajay302001/webpage:${BUILD_NUMBER}"
        }
      }
    }
